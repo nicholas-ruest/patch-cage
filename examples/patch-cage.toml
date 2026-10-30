@@ -1,0 +1,11 @@
+version = 1
+max_files = 4
+max_added_lines = 80
+max_removed_lines = 40
+allowed_paths = ["src/**", "tests/**"]
+denied_paths = ["src/generated/**", "**/*.pem", "**/*.key"]
+allow_new_files = true
+allow_deleted_files = false
+allow_renames = false
+allow_binary = false
+allow_mode_changes = false

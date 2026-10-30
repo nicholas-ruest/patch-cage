@@ -1,1 +1,146 @@
-import{readFileSync,writeFileSync,readdirSync,statSync}from'node:fs';import{createHash}from'node:crypto';import{join}from'node:path';import{execFileSync}from'node:child_process';const[root,e]=process.argv.slice(2),sha=execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim();const h=p=>createHash('sha256').update(readFileSync(join(e,p))).digest('hex');const arts=[];for(const p of readdirSync(e)){if(statSync(join(e,p)).isFile()&&!p.endsWith('.receipt.json')&&p!=='manifest.json')arts.push({kind:p==='playwright.json'?'browser_report':p==='desktop.png'?'desktop_screenshot':p==='mobile.png'?'mobile_screenshot':p==='integration-trace.json'?'integration_execution':'correlation_trace',path:p,sha256:h(p)})}const trace='correlation.jsonl';writeFileSync(join(e,trace),JSON.stringify({correlation_id:'ui-primary-001',source_sha:sha,route:'/v1/assessments'})+'\n');arts.push({kind:'correlation_trace',path:trace,sha256:h(trace)});const sem='semantic-review.md';writeFileSync(join(e,sem),'# Independent semantic review\n\nSource '+sha+'; 23 crates inspected for typed behavior, callers and failure tests. Verdict: pending human/source readback.\n');arts.push({kind:'semantic_review',path:sem,sha256:h(sem)});const receipts=readdirSync(e).filter(x=>x.endsWith('.receipt.json'));const manifest={schema_version:2,source_sha:sha,created_at:new Date().toISOString(),launch_mode:'local-real-backend',test_namespace:'dream-machine/patch-cage/2026-10-29',receipts,artifacts:arts};writeFileSync(join(e,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');const cratePaths=["crates/pc-types/Cargo.toml","crates/pc-ingest/Cargo.toml","crates/pc-repository/Cargo.toml","crates/pc-change-graph/Cargo.toml","crates/pc-policy/Cargo.toml","crates/pc-authz/Cargo.toml","crates/pc-approval/Cargo.toml","crates/pc-sandbox-plan/Cargo.toml","crates/pc-sandbox-runner/Cargo.toml","crates/pc-risk-engine/Cargo.toml","crates/pc-ruvector/Cargo.toml","crates/pc-rvf-ledger/Cargo.toml","crates/pc-ruflo/Cargo.toml","crates/pc-metaharness/Cargo.toml","crates/pc-rune/Cargo.toml","crates/pc-synthlang/Cargo.toml","crates/pc-openfeature/Cargo.toml","crates/pc-telemetry/Cargo.toml","crates/pc-review/Cargo.toml","crates/pc-release/Cargo.toml","crates/pc-audit/Cargo.toml","crates/pc-app/Cargo.toml","crates/pc-api/Cargo.toml"];const dependencies=[{"repo":"ruvnet/RuVector","revision":"fefc2ec966b6cfccaeacba092f0b39d6796d7a11","license":"MIT","responsibility":"Vector precedent storage and nearest-risk retrieval","manifest_path":"crates/pc-ruvector/Cargo.toml","call_site_path":"crates/pc-ruvector/src/lib.rs","test_path":"crates/pc-ruvector/src/lib.rs","runtime_evidence_path":"integration-trace.json"},{"repo":"ruvnet/ruflo","revision":"5d2be9374a3824e7d4496437c18d25d4a0cc9171","license":"MIT","responsibility":"Dependency-aware analysis workflow coordination","manifest_path":"integrations/upstreams.json","call_site_path":"crates/pc-app/src/lib.rs","test_path":"crates/pc-app/src/lib.rs","runtime_evidence_path":"integration-trace.json"},{"repo":"ruvnet/metaharness","revision":"2f415bf47a7beb36f6a43c24e85a509acedf9ebb","license":"MIT","responsibility":"Adversarial repository and harness readiness scoring","manifest_path":"integrations/upstreams.json","call_site_path":"crates/pc-app/src/lib.rs","test_path":"crates/pc-app/src/lib.rs","runtime_evidence_path":"integration-trace.json"},{"repo":"ruvnet/rune","revision":"92425512f0f742e21b747f58f7555104446fc9de","license":"MIT","responsibility":"Clean reproducible build and artifact verification","manifest_path":"integrations/upstreams.json","call_site_path":"crates/pc-app/src/lib.rs","test_path":"crates/pc-app/src/lib.rs","runtime_evidence_path":"integration-trace.json"},{"repo":"ruvnet/SynthLang","revision":"cf16b42178b39f0470f3392994da2605aaf7a64a","license":"MIT","responsibility":"Patch-intent compression and classification","manifest_path":"integrations/upstreams.json","call_site_path":"crates/pc-app/src/lib.rs","test_path":"crates/pc-app/src/lib.rs","runtime_evidence_path":"integration-trace.json"},{"repo":"open-feature/rust-sdk","revision":"2a417c1fdb1c076f2bd4025adb40ed8d7451a4c6","license":"Apache-2.0","responsibility":"Dynamic release policy evaluation","manifest_path":"crates/pc-openfeature/Cargo.toml","call_site_path":"crates/pc-openfeature/src/lib.rs","test_path":"crates/pc-app/src/lib.rs","runtime_evidence_path":"integration-trace.json"},{"repo":"open-telemetry/opentelemetry-rust","revision":"6860b49c0bab0dd6bbf4054e71cdba981528c50b","license":"Apache-2.0","responsibility":"Distributed request and integration tracing","manifest_path":"crates/pc-telemetry/Cargo.toml","call_site_path":"crates/pc-telemetry/src/lib.rs","test_path":"crates/pc-app/src/lib.rs","runtime_evidence_path":"integration-trace.json"}];const hist=[{"date":"2026-10-28","evidence_url":"https://github.com/nicholas-ruest/context-bastion/commit/6e546aeb71a1e2e5976e1c23a733bcc9e1a82da9","source_sha":"6e546aeb71a1e2e5976e1c23a733bcc9e1a82da9","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"microsoft/regorus","category":"enterprise"}]},{"date":"2026-10-26","evidence_url":"https://github.com/nicholas-ruest/contract-current/commit/1111111111111111111111111111111111111111","source_sha":"1111111111111111111111111111111111111111","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"cedar-policy/cedar","category":"enterprise"}]},{"date":"2026-10-25","evidence_url":"https://github.com/nicholas-ruest/mandate-mesh/commit/2222222222222222222222222222222222222222","source_sha":"2222222222222222222222222222222222222222","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"microsoft/regorus","category":"enterprise"}]},{"date":"2026-10-24","evidence_url":"https://github.com/nicholas-ruest/route-foundry/commit/3333333333333333333333333333333333333333","source_sha":"3333333333333333333333333333333333333333","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"microsoft/regorus","category":"enterprise"}]},{"date":"2026-10-23","evidence_url":"https://github.com/nicholas-ruest/purpose-lattice/commit/4444444444444444444444444444444444444444","source_sha":"4444444444444444444444444444444444444444","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"apache/arrow-rs","category":"enterprise"}]},{"date":"2026-10-22","evidence_url":"https://github.com/nicholas-ruest/commitment-horizon/commit/5555555555555555555555555555555555555555","source_sha":"5555555555555555555555555555555555555555","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"microsoft/regorus","category":"enterprise"}]},{"date":"2026-10-21","evidence_url":"https://github.com/nicholas-ruest/causal-tapestry/commit/6666666666666666666666666666666666666666","source_sha":"6666666666666666666666666666666666666666","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"microsoft/regorus","category":"enterprise"}]},{"date":"2026-10-20","evidence_url":"https://github.com/nicholas-ruest/canary-covenant/commit/7777777777777777777777777777777777777777","source_sha":"7777777777777777777777777777777777777777","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"open-feature/rust-sdk","category":"enterprise"}]},{"date":"2026-10-19","evidence_url":"https://github.com/nicholas-ruest/counterfactual-shield/commit/8888888888888888888888888888888888888888","source_sha":"8888888888888888888888888888888888888888","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"},{"repo":"cedar-policy/cedar","category":"enterprise"}]},{"date":"2026-10-18","evidence_url":"https://github.com/nicholas-ruest/context-ferry/commit/9999999999999999999999999999999999999999","source_sha":"9999999999999999999999999999999999999999","dependencies":[{"repo":"ruvnet/RuVector","category":"ruvnet"}]}];const composition={schema_version:1,source_sha:sha,dependencies:dependencies.map(x=>({...x,category:x.repo.startsWith('ruvnet/')?'ruvnet':'enterprise'})),history_status:'VERIFIED',history:hist,backend:{entrypoint:'crates/pc-api/src/main.rs',crates:cratePaths.map((p,i)=>({manifest_path:p,implementation_path:p.replace('Cargo.toml',i===cratePaths.length-1?'src/main.rs':'src/lib.rs'),caller_path:i===cratePaths.length-1?'crates/pc-api/src/main.rs':'crates/pc-app/src/lib.rs',test_path:i===cratePaths.length-1?'crates/pc-api/src/lib.rs':p.replace('Cargo.toml','src/lib.rs')}))},middleware:{source_paths:['crates/pc-api/src/main.rs','crates/pc-authz/src/lib.rs','crates/pc-policy/src/lib.rs','crates/pc-telemetry/src/lib.rs'],denial_test_path:'crates/pc-app/src/lib.rs',runtime_evidence_path:'correlation.jsonl'},journeys:['primary','denial-recovery','durable-retrieval'].map((name,i)=>({name,frontend_path:'frontend/src/main.tsx',api_path:'openapi/openapi.yaml',middleware_path:'crates/pc-api/src/main.rs',backend_path:'crates/pc-app/src/lib.rs',correlation_id:['ui-primary-001','ui-denial-001','ui-durable-001'][i],runtime_evidence_path:'correlation.jsonl',crate_manifest_paths:cratePaths,dependency_repos:dependencies.map(x=>x.repo)}))};writeFileSync(join(e,'composition-report.json'),JSON.stringify(composition,null,2)+'\n');manifest.artifacts.push({kind:'composition_report',path:'composition-report.json',sha256:h('composition-report.json')});writeFileSync(join(e,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+#!/usr/bin/env node
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {readFileSync, readdirSync, statSync, writeFileSync} from 'node:fs';
+import {join} from 'node:path';
+
+const [root, evidenceDir] = process.argv.slice(2);
+const sourceSha = execFileSync('git', ['-C', root, 'rev-parse', 'HEAD'], {encoding: 'utf8'}).trim();
+const digest = path => createHash('sha256').update(readFileSync(join(evidenceDir, path))).digest('hex');
+const kindOf = path => path === 'playwright.json' ? 'browser_report'
+  : path === 'desktop.png' ? 'desktop_screenshot'
+  : path === 'mobile.png' ? 'mobile_screenshot'
+  : path === 'integration-trace.json' ? 'integration_execution'
+  : path.endsWith('.log') ? 'raw_log'
+  : 'correlation_trace';
+
+const artifacts = readdirSync(evidenceDir)
+  .filter(path => statSync(join(evidenceDir, path)).isFile())
+  .filter(path => !path.endsWith('.receipt.json') && !['manifest.json', 'composition-report.json', 'semantic-review.md'].includes(path))
+  .map(path => ({kind: kindOf(path), path, sha256: digest(path)}));
+
+const semanticReview = `# Independent semantic review
+
+Source: ${sourceSha}
+
+Verdict: **FAIL**
+
+The browser-to-backend product slice executes, but only RuVector, OpenFeature Rust and OpenTelemetry Rust have installed/linkable upstream calls. Ruflo, MetaHarness, Rune and SynthLang are represented by local repetitive adapters rather than executed upstream projects. Most workspace crates expose the same evaluate function and do not meet the meaningful-crate standard. Counted meaningful product crates: 7/20. Ruvnet executed: 1/5. Enterprise executed: 2/2.
+`;
+writeFileSync(join(evidenceDir, 'semantic-review.md'), semanticReview);
+artifacts.push({kind: 'semantic_review', path: 'semantic-review.md', sha256: digest('semantic-review.md')});
+
+const dependencies = [
+  {
+    repo: 'ruvnet/RuVector',
+    category: 'ruvnet',
+    revision: 'fefc2ec966b6cfccaeacba092f0b39d6796d7a11',
+    license: 'MIT',
+    responsibility: 'In-process vector insertion for patch risk features',
+    manifest_path: 'crates/pc-ruvector/Cargo.toml',
+    call_site_path: 'crates/pc-ruvector/src/lib.rs',
+    test_path: 'crates/pc-ruvector/src/lib.rs',
+    runtime_evidence_path: 'playwright.json',
+  },
+  {
+    repo: 'open-feature/rust-sdk',
+    category: 'enterprise',
+    revision: '2a417c1fdb1c076f2bd4025adb40ed8d7451a4c6',
+    license: 'Apache-2.0',
+    responsibility: 'Typed feature evaluation context',
+    manifest_path: 'crates/pc-openfeature/Cargo.toml',
+    call_site_path: 'crates/pc-openfeature/src/lib.rs',
+    test_path: 'crates/pc-openfeature/src/lib.rs',
+    runtime_evidence_path: 'playwright.json',
+  },
+  {
+    repo: 'open-telemetry/opentelemetry-rust',
+    category: 'enterprise',
+    revision: '6860b49c0bab0dd6bbf4054e71cdba981528c50b',
+    license: 'Apache-2.0',
+    responsibility: 'Typed telemetry attributes',
+    manifest_path: 'crates/pc-telemetry/Cargo.toml',
+    call_site_path: 'crates/pc-telemetry/src/lib.rs',
+    test_path: 'crates/pc-telemetry/src/lib.rs',
+    runtime_evidence_path: 'playwright.json',
+  },
+];
+
+const meaningfulCrates = [
+  'crates/pc-types/Cargo.toml',
+  'crates/pc-rvf-ledger/Cargo.toml',
+  'crates/pc-ruvector/Cargo.toml',
+  'crates/pc-openfeature/Cargo.toml',
+  'crates/pc-telemetry/Cargo.toml',
+  'crates/pc-app/Cargo.toml',
+  'crates/pc-api/Cargo.toml',
+];
+
+const history = [
+  ['2026-10-28', 'context-bastion', '6e546aeb71a1e2e5976e1c23a733bcc9e1a82da9'],
+  ['2026-10-26', 'contract-current', '3bd6886139436a9d19379933b6008517b12d15a5'],
+  ['2026-10-25', 'mandate-mesh', 'fa6e7ce708528d2a2a1d466d5524e99da2930323'],
+  ['2026-10-24', 'route-foundry', '4ce809a9e0bf9f2a87a8eb3be8b2610454bee36e'],
+  ['2026-10-23', 'purpose-lattice', '45bc755ccd3c2e26b03b0178fe88fa9888d11b56'],
+  ['2026-10-22', 'commitment-horizon', 'e9d85ec4053d1e11e955ca96e0a2d251abc2736e'],
+  ['2026-10-21', 'causal-tapestry', 'eb01096ae941ce49c494dfcb927ff3101853fc0c'],
+  ['2026-10-20', 'canary-covenant', '02cd8749f762c6ed08ab0fdbc2be86324672a503'],
+  ['2026-10-19', 'counterfactual-shield', '22ac64b94c528feb20a1876913d89e14d7907122'],
+  ['2026-10-18', 'context-ferry', '40fe13adaf8e2a5704da506317825d542c3098ed'],
+].map(([date, repository, sha]) => ({
+  date,
+  repository: `nicholas-ruest/${repository}`,
+  source_sha: sha,
+  evidence_url: `https://github.com/nicholas-ruest/${repository}/commit/${sha}`,
+}));
+
+const composition = {
+  schema_version: 1,
+  source_sha: sourceSha,
+  verdict: 'FAIL',
+  failure_reasons: [
+    'RUVNET_EXECUTED_1_OF_5',
+    'MEANINGFUL_PRODUCT_CRATES_7_OF_20',
+    'SELECTION_HISTORY_INGREDIENT_MATRICES_UNVERIFIED',
+  ],
+  dependencies,
+  history_status: 'SELECTION_HISTORY_UNVERIFIED',
+  history,
+  backend: {
+    entrypoint: 'crates/pc-api/src/main.rs',
+    crates: meaningfulCrates.map(path => ({
+      manifest_path: path,
+      implementation_path: path.replace('Cargo.toml', path.endsWith('pc-api/Cargo.toml') ? 'src/main.rs' : 'src/lib.rs'),
+      caller_path: path.endsWith('pc-api/Cargo.toml') ? 'crates/pc-api/src/main.rs' : 'crates/pc-app/src/lib.rs',
+      test_path: path.replace('Cargo.toml', 'src/lib.rs'),
+    })),
+  },
+  middleware: {
+    source_paths: ['crates/pc-api/src/main.rs', 'crates/pc-authz/src/lib.rs', 'crates/pc-policy/src/lib.rs'],
+    denial_test_path: 'crates/pc-app/src/lib.rs',
+    runtime_evidence_path: 'playwright.json',
+  },
+  journeys: ['primary', 'denial-recovery', 'durable-retrieval'].map(name => ({
+    name,
+    frontend_path: 'frontend/src/main.tsx',
+    api_path: 'openapi/openapi.yaml',
+    middleware_path: 'crates/pc-api/src/main.rs',
+    backend_path: 'crates/pc-app/src/lib.rs',
+    runtime_evidence_path: 'playwright.json',
+    crate_manifest_paths: meaningfulCrates,
+    dependency_repos: dependencies.map(item => item.repo),
+  })),
+};
+writeFileSync(join(evidenceDir, 'composition-report.json'), JSON.stringify(composition, null, 2) + '\n');
+artifacts.push({kind: 'composition_report', path: 'composition-report.json', sha256: digest('composition-report.json')});
+
+const manifest = {
+  schema_version: 2,
+  source_sha: sourceSha,
+  created_at: new Date().toISOString(),
+  launch_mode: 'local-real-backend',
+  test_namespace: 'dream-machine/patch-cage/2026-10-29',
+  receipts: readdirSync(evidenceDir).filter(path => path.endsWith('.receipt.json')),
+  artifacts,
+};
+writeFileSync(join(evidenceDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');

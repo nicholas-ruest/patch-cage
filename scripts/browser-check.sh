@@ -11,4 +11,4 @@ for _ in $(seq 1 120); do
   sleep 1
 done
 test "${ready:-0}" = 1
-npm --prefix frontend exec playwright test -- --config playwright.config.ts
+npm --prefix frontend exec playwright test -- --config frontend/playwright.config.ts

@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info: {title: Patch Cage API, version: 1.0.0}
+paths:
+  /v1/assessments:
+    post:
+      operationId: analyzePatch
+      requestBody: {required: true, content: {application/json: {schema: {type: object, required: [diff], properties: {diff: {type: string}}}}}}
+      responses: {'201': {description: Created}, '403': {description: Policy denied}, '422': {description: Invalid patch}}
+  /v1/assessments/{id}:
+    get: {operationId: getAssessment, parameters: [{name: id, in: path, required: true, schema: {type: string}}], responses: {'200': {description: Found}, '404': {description: Missing}}}

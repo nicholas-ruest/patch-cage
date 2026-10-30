@@ -1,0 +1,1 @@
+import{defineConfig}from'@playwright/test';export default defineConfig({testDir:'tests',reporter:[['json',{outputFile:process.env.DREAM_MACHINE_EVIDENCE_DIR+'/playwright.json'}]],use:{trace:'on',baseURL:'http://127.0.0.1:4173'}});

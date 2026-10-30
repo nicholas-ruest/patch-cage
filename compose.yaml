@@ -1,0 +1,7 @@
+services:
+  patch-cage:
+    build: .
+    ports: ["8080:8080"]
+    environment: ["PATCH_CAGE_STORE=/data/events.jsonl"]
+    volumes: ["patch-cage:/data"]
+volumes: {patch-cage: {}}

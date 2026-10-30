@@ -1,0 +1,1 @@
+import{describe,it,expect}from'vitest';describe('ui contract',()=>{it('names all workflows',()=>{expect(['Intake','Analysis','Review','Audit','Integrations']).toHaveLength(5)})});

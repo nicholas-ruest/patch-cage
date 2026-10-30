@@ -1,0 +1,12 @@
+[package]
+name="pc-change-graph"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="Dependency and ownership blast-radius graph"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }

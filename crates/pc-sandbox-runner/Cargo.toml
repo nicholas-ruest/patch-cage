@@ -1,0 +1,12 @@
+[package]
+name="pc-sandbox-runner"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="Cancelable sandbox execution with timeout receipts"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }

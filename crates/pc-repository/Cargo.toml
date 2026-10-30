@@ -1,0 +1,12 @@
+[package]
+name="pc-repository"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="Repository topology and protected-path model"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }

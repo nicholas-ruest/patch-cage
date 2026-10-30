@@ -1,0 +1,12 @@
+[package]
+name="pc-release"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="Fail-closed release gate and no-effect denial"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }

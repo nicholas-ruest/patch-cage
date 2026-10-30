@@ -1,0 +1,13 @@
+[package]
+name="pc-openfeature"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="OpenFeature rollout decision boundary"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }
+open-feature = { git="https://github.com/open-feature/rust-sdk", rev="2a417c1fdb1c076f2bd4025adb40ed8d7451a4c6", package="open-feature" }

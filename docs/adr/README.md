@@ -1,0 +1,27 @@
+# ADR index
+
+- [ADR-0001](ADR-0001.md): Browser-first vertical slice
+- [ADR-0002](ADR-0002.md): Axum versioned API
+- [ADR-0003](ADR-0003.md): React TypeScript workbench
+- [ADR-0004](ADR-0004.md): Correlation before authorization
+- [ADR-0005](ADR-0005.md): Fail-closed policy order
+- [ADR-0006](ADR-0006.md): RuVector authoritative intelligence
+- [ADR-0007](ADR-0007.md): RVF append-only evidence
+- [ADR-0008](ADR-0008.md): Ruflo orchestration boundary
+- [ADR-0009](ADR-0009.md): MetaHarness adversarial scoring
+- [ADR-0010](ADR-0010.md): Rune reproducible builds
+- [ADR-0011](ADR-0011.md): SynthLang intent compression
+- [ADR-0012](ADR-0012.md): OpenFeature rollout gates
+- [ADR-0013](ADR-0013.md): OpenTelemetry propagation
+- [ADR-0014](ADR-0014.md): Protected-path denial
+- [ADR-0015](ADR-0015.md): Two-person approval
+- [ADR-0016](ADR-0016.md): Idempotent assessment creation
+- [ADR-0017](ADR-0017.md): Bounded external timeouts
+- [ADR-0018](ADR-0018.md): Conformal abstention
+- [ADR-0019](ADR-0019.md): No-effect denial invariant
+- [ADR-0020](ADR-0020.md): External schema-v2 evidence
+- [ADR-0021](ADR-0021.md): Clean immutable candidate
+- [ADR-0022](ADR-0022.md): Container parity in CI
+- [ADR-0023](ADR-0023.md): Cloud Run stateless service
+- [ADR-0024](ADR-0024.md): Synthetic namespace isolation
+- [ADR-0025](ADR-0025.md): Human-controlled promotion

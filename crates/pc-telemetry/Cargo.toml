@@ -1,0 +1,13 @@
+[package]
+name="pc-telemetry"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="OpenTelemetry spans and correlation propagation"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }
+opentelemetry = { git="https://github.com/open-telemetry/opentelemetry-rust", rev="6860b49c0bab0dd6bbf4054e71cdba981528c50b", package="opentelemetry" }

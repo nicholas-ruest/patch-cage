@@ -1,0 +1,19 @@
+[package]
+name="pc-api"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="Versioned Axum API, middleware and service entrypoint"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-app = { path="../pc-app" }
+pc-types = { path="../pc-types" }
+axum = { workspace=true }
+tokio = { workspace=true }
+tower-http = { workspace=true }
+tracing = { workspace=true }
+tracing-subscriber = { workspace=true }
+uuid = { workspace=true }

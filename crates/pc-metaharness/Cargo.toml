@@ -1,0 +1,12 @@
+[package]
+name="pc-metaharness"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="MetaHarness repository scoring boundary"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }

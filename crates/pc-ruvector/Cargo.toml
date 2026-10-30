@@ -1,0 +1,13 @@
+[package]
+name="pc-ruvector"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="RuVector-backed precedent memory and retrieval"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }
+ruvector-core = { git="https://github.com/ruvnet/RuVector", rev="fefc2ec966b6cfccaeacba092f0b39d6796d7a11", package="ruvector-core", default-features=false }

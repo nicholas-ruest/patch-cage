@@ -1,0 +1,36 @@
+[package]
+name="pc-app"
+version.workspace=true
+edition.workspace=true
+license.workspace=true
+description="Application orchestration across all bounded contexts"
+
+[dependencies]
+serde = { workspace=true }
+serde_json = { workspace=true }
+thiserror = { workspace=true }
+pc-types = { path="../pc-types" }
+pc-ingest = { path="../pc-ingest" }
+pc-repository = { path="../pc-repository" }
+pc-change-graph = { path="../pc-change-graph" }
+pc-policy = { path="../pc-policy" }
+pc-authz = { path="../pc-authz" }
+pc-approval = { path="../pc-approval" }
+pc-sandbox-plan = { path="../pc-sandbox-plan" }
+pc-sandbox-runner = { path="../pc-sandbox-runner" }
+pc-risk-engine = { path="../pc-risk-engine" }
+pc-ruvector = { path="../pc-ruvector" }
+pc-rvf-ledger = { path="../pc-rvf-ledger" }
+pc-ruflo = { path="../pc-ruflo" }
+pc-metaharness = { path="../pc-metaharness" }
+pc-rune = { path="../pc-rune" }
+pc-synthlang = { path="../pc-synthlang" }
+pc-openfeature = { path="../pc-openfeature" }
+pc-telemetry = { path="../pc-telemetry" }
+pc-review = { path="../pc-review" }
+pc-release = { path="../pc-release" }
+pc-audit = { path="../pc-audit" }
+anyhow = { workspace=true }
+tokio = { workspace=true }
+uuid = { workspace=true }
+chrono = { workspace=true }

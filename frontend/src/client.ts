@@ -1,0 +1,1 @@
+export type AnalyzeRequest={diff:string};export async function analyzePatch(request:AnalyzeRequest,role='reviewer'){const r=await fetch('/v1/assessments',{method:'POST',headers:{'content-type':'application/json','x-patch-cage-role':role},body:JSON.stringify(request)});if(!r.ok)throw await r.json();return r.json()}

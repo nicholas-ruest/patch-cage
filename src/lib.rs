@@ -489,7 +489,7 @@ index 1111111..2222222 100644
         let report = evaluate(&policy, POLICY, patch, SAFE_PATCH).expect("evaluation should work");
         assert!(report.passed);
         assert_eq!(report.patch_sha256.len(), 64);
-        assert!(report.findings.is_empty());
+        assert_eq!(report.findings, Vec::new());
     }
 
     #[test]

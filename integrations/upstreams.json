@@ -1,0 +1,44 @@
+[
+  {
+    "repo": "ruvnet/RuVector",
+    "revision": "fefc2ec966b6cfccaeacba092f0b39d6796d7a11",
+    "license": "MIT",
+    "responsibility": "Vector precedent storage and nearest-risk retrieval"
+  },
+  {
+    "repo": "ruvnet/ruflo",
+    "revision": "5d2be9374a3824e7d4496437c18d25d4a0cc9171",
+    "license": "MIT",
+    "responsibility": "Dependency-aware analysis workflow coordination"
+  },
+  {
+    "repo": "ruvnet/metaharness",
+    "revision": "2f415bf47a7beb36f6a43c24e85a509acedf9ebb",
+    "license": "MIT",
+    "responsibility": "Adversarial repository and harness readiness scoring"
+  },
+  {
+    "repo": "ruvnet/rune",
+    "revision": "92425512f0f742e21b747f58f7555104446fc9de",
+    "license": "MIT",
+    "responsibility": "Clean reproducible build and artifact verification"
+  },
+  {
+    "repo": "ruvnet/SynthLang",
+    "revision": "cf16b42178b39f0470f3392994da2605aaf7a64a",
+    "license": "MIT",
+    "responsibility": "Patch-intent compression and classification"
+  },
+  {
+    "repo": "open-feature/rust-sdk",
+    "revision": "2a417c1fdb1c076f2bd4025adb40ed8d7451a4c6",
+    "license": "Apache-2.0",
+    "responsibility": "Dynamic release policy evaluation"
+  },
+  {
+    "repo": "open-telemetry/opentelemetry-rust",
+    "revision": "6860b49c0bab0dd6bbf4054e71cdba981528c50b",
+    "license": "Apache-2.0",
+    "responsibility": "Distributed request and integration tracing"
+  }
+]

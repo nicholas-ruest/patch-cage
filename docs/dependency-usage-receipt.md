@@ -5,15 +5,15 @@ History was checked against the last ten attributable Dream Machine repositories
 | Date | Repository | Source | Ingredients |
 |---|---|---|---|
 | 2026-10-28 | nicholas-ruest/context-bastion | 6e546aeb71a1e2e5976e1c23a733bcc9e1a82da9 | ruvnet/RuVector, microsoft/regorus |
-| 2026-10-26 | nicholas-ruest/contract-current | 1111111111111111111111111111111111111111 | ruvnet/RuVector, cedar-policy/cedar |
-| 2026-10-25 | nicholas-ruest/mandate-mesh | 2222222222222222222222222222222222222222 | ruvnet/RuVector, microsoft/regorus |
-| 2026-10-24 | nicholas-ruest/route-foundry | 3333333333333333333333333333333333333333 | ruvnet/RuVector, microsoft/regorus |
-| 2026-10-23 | nicholas-ruest/purpose-lattice | 4444444444444444444444444444444444444444 | ruvnet/RuVector, apache/arrow-rs |
-| 2026-10-22 | nicholas-ruest/commitment-horizon | 5555555555555555555555555555555555555555 | ruvnet/RuVector, microsoft/regorus |
-| 2026-10-21 | nicholas-ruest/causal-tapestry | 6666666666666666666666666666666666666666 | ruvnet/RuVector, microsoft/regorus |
-| 2026-10-20 | nicholas-ruest/canary-covenant | 7777777777777777777777777777777777777777 | ruvnet/RuVector, open-feature/rust-sdk |
-| 2026-10-19 | nicholas-ruest/counterfactual-shield | 8888888888888888888888888888888888888888 | ruvnet/RuVector, cedar-policy/cedar |
-| 2026-10-18 | nicholas-ruest/context-ferry | 9999999999999999999999999999999999999999 | ruvnet/RuVector |
+| 2026-10-26 | nicholas-ruest/contract-current | 3bd6886139436a9d19379933b6008517b12d15a5 | ruvnet/RuVector, cedar-policy/cedar |
+| 2026-10-25 | nicholas-ruest/mandate-mesh | fa6e7ce708528d2a2a1d466d5524e99da2930323 | ruvnet/RuVector, microsoft/regorus |
+| 2026-10-24 | nicholas-ruest/route-foundry | 4ce809a9e0bf9f2a87a8eb3be8b2610454bee36e | ruvnet/RuVector, microsoft/regorus |
+| 2026-10-23 | nicholas-ruest/purpose-lattice | 45bc755ccd3c2e26b03b0178fe88fa9888d11b56 | ruvnet/RuVector, apache/arrow-rs |
+| 2026-10-22 | nicholas-ruest/commitment-horizon | e9d85ec4053d1e11e955ca96e0a2d251abc2736e | ruvnet/RuVector, microsoft/regorus |
+| 2026-10-21 | nicholas-ruest/causal-tapestry | eb01096ae941ce49c494dfcb927ff3101853fc0c | ruvnet/RuVector, microsoft/regorus |
+| 2026-10-20 | nicholas-ruest/canary-covenant | 02cd8749f762c6ed08ab0fdbc2be86324672a503 | ruvnet/RuVector, open-feature/rust-sdk |
+| 2026-10-19 | nicholas-ruest/counterfactual-shield | 22ac64b94c528feb20a1876913d89e14d7907122 | ruvnet/RuVector, cedar-policy/cedar |
+| 2026-10-18 | nicholas-ruest/context-ferry | 40fe13adaf8e2a5704da506317825d542c3098ed | ruvnet/RuVector |
 
 ## Evaluated Ruvnet shortlist
 

@@ -93,8 +93,9 @@ async fn main() {
         .layer(TraceLayer::new_for_http())
         .layer(CorsLayer::permissive())
         .with_state(state);
-    let addr = "0.0.0.0:8080";
-    let l = tokio::net::TcpListener::bind(addr).await.unwrap();
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8080".into());
+    let addr = format!("0.0.0.0:{port}");
+    let l = tokio::net::TcpListener::bind(&addr).await.unwrap();
     tracing::info!(%addr,"patch_cage_ready");
     axum::serve(l, app).await.unwrap()
 }

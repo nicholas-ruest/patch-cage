@@ -13,7 +13,9 @@ const entries=[];
 for(const file of walk(root)){
   const content=readFileSync(file).toString('base64');
   const blob=JSON.parse(gh(['api',`repos/${repo}/git/blobs`,'--method','POST','--input','-'],JSON.stringify({content,encoding:'base64'})));
-  entries.push({path:relative(root,file).replaceAll('\\','/'),mode:'100644',type:'blob',sha:blob.sha});
+  const path=relative(root,file).replaceAll('\\','/');
+  const executable=(path.startsWith('scripts/')&&(/\.(sh|mjs)$/.test(path)))||path==='tools/publish_tree.mjs';
+  entries.push({path,mode:executable?'100755':'100644',type:'blob',sha:blob.sha});
 }
 const tree=JSON.parse(gh(['api',`repos/${repo}/git/trees`,'--method','POST','--input','-'],JSON.stringify({base_tree:baseCommit.tree.sha,tree:entries})));
 const commit=JSON.parse(gh(['api',`repos/${repo}/git/commits`,'--method','POST','--input','-'],JSON.stringify({message,tree:tree.sha,parents:[base]})));

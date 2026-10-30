@@ -1,6 +1,100 @@
-use axum::{extract::{Path,State},http::{HeaderMap,StatusCode},response::IntoResponse,routing::{get,post},Json,Router};use pc_app::{Analyze,App};use serde::Deserialize;use tower_http::{cors::CorsLayer,timeout::TimeoutLayer,trace::TraceLayer};use std::{sync::Arc,time::Duration};use uuid::Uuid;
-#[derive(Clone)]struct S(Arc<App>);fn role(h:&HeaderMap)->&str{h.get("x-patch-cage-role").and_then(|v|v.to_str().ok()).unwrap_or("viewer")}fn cid(h:&HeaderMap)->String{h.get("x-correlation-id").and_then(|v|v.to_str().ok()).map(str::to_owned).unwrap_or_else(||Uuid::new_v4().to_string())}
-async fn health()->impl IntoResponse{Json(serde_json::json!({"status":"ok"}))} async fn ready()->impl IntoResponse{Json(serde_json::json!({"status":"ready","storage":"rvf-jsonl","intelligence":"ruvector"}))}
-async fn analyze(State(s):State<S>,h:HeaderMap,Json(q):Json<Analyze>)->impl IntoResponse{if q.diff.len()<12||q.diff.len()>200000{return(StatusCode::UNPROCESSABLE_ENTITY,Json(serde_json::json!({"code":"invalid_patch"})))}match s.0.analyze(&q.diff,role(&h),&cid(&h)).await{Ok(a)=>(StatusCode::CREATED,Json(serde_json::to_value(a).unwrap())),Err(e)=>(StatusCode::FORBIDDEN,Json(serde_json::json!({"code":e.to_string()})))}}
-#[derive(Deserialize)]struct Decision{approve:bool}async fn decide(State(s):State<S>,Path(id):Path<String>,h:HeaderMap,Json(q):Json<Decision>)->impl IntoResponse{match s.0.decide(&id,q.approve,role(&h)){Ok(a)=>(StatusCode::OK,Json(serde_json::to_value(a).unwrap())),Err(e)=>(StatusCode::FORBIDDEN,Json(serde_json::json!({"code":e.to_string()})))}}async fn audit(State(s):State<S>,Path(id):Path<String>)->impl IntoResponse{match s.0.get(&id){Ok(Some(a))=>(StatusCode::OK,Json(serde_json::to_value(a).unwrap())),_=>(StatusCode::NOT_FOUND,Json(serde_json::json!({"code":"not_found"})))}}
-#[tokio::main]async fn main(){tracing_subscriber::fmt().json().with_env_filter("info").init();let store=std::env::var("PATCH_CAGE_STORE").unwrap_or_else(|_|"/tmp/patch-cage/events.jsonl".into());let state=S(Arc::new(App::new(store)));let app=Router::new().route("/v1/health",get(health)).route("/v1/readiness",get(ready)).route("/v1/assessments",post(analyze)).route("/v1/assessments/{id}/decision",post(decide)).route("/v1/assessments/{id}",get(audit)).layer(TimeoutLayer::with_status_code(StatusCode::REQUEST_TIMEOUT, Duration::from_secs(20))).layer(TraceLayer::new_for_http()).layer(CorsLayer::permissive()).with_state(state);let addr="0.0.0.0:8080";let l=tokio::net::TcpListener::bind(addr).await.unwrap();tracing::info!(%addr,"patch_cage_ready");axum::serve(l,app).await.unwrap()}
+use axum::{
+    extract::{Path, State},
+    http::{HeaderMap, StatusCode},
+    response::IntoResponse,
+    routing::{get, post},
+    Json, Router,
+};
+use pc_app::{Analyze, App};
+use serde::Deserialize;
+use std::{sync::Arc, time::Duration};
+use tower_http::{cors::CorsLayer, timeout::TimeoutLayer, trace::TraceLayer};
+use uuid::Uuid;
+#[derive(Clone)]
+struct S(Arc<App>);
+fn role(h: &HeaderMap) -> &str {
+    h.get("x-patch-cage-role")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("viewer")
+}
+fn cid(h: &HeaderMap) -> String {
+    h.get("x-correlation-id")
+        .and_then(|v| v.to_str().ok())
+        .map(str::to_owned)
+        .unwrap_or_else(|| Uuid::new_v4().to_string())
+}
+async fn health() -> impl IntoResponse {
+    Json(serde_json::json!({"status":"ok"}))
+}
+async fn ready() -> impl IntoResponse {
+    Json(serde_json::json!({"status":"ready","storage":"rvf-jsonl","intelligence":"ruvector"}))
+}
+async fn analyze(State(s): State<S>, h: HeaderMap, Json(q): Json<Analyze>) -> impl IntoResponse {
+    if q.diff.len() < 12 || q.diff.len() > 200000 {
+        return (
+            StatusCode::UNPROCESSABLE_ENTITY,
+            Json(serde_json::json!({"code":"invalid_patch"})),
+        );
+    }
+    match s.0.analyze(&q.diff, role(&h), &cid(&h)).await {
+        Ok(a) => (StatusCode::CREATED, Json(serde_json::to_value(a).unwrap())),
+        Err(e) => (
+            StatusCode::FORBIDDEN,
+            Json(serde_json::json!({"code":e.to_string()})),
+        ),
+    }
+}
+#[derive(Deserialize)]
+struct Decision {
+    approve: bool,
+}
+async fn decide(
+    State(s): State<S>,
+    Path(id): Path<String>,
+    h: HeaderMap,
+    Json(q): Json<Decision>,
+) -> impl IntoResponse {
+    match s.0.decide(&id, q.approve, role(&h)) {
+        Ok(a) => (StatusCode::OK, Json(serde_json::to_value(a).unwrap())),
+        Err(e) => (
+            StatusCode::FORBIDDEN,
+            Json(serde_json::json!({"code":e.to_string()})),
+        ),
+    }
+}
+async fn audit(State(s): State<S>, Path(id): Path<String>) -> impl IntoResponse {
+    match s.0.get(&id) {
+        Ok(Some(a)) => (StatusCode::OK, Json(serde_json::to_value(a).unwrap())),
+        _ => (
+            StatusCode::NOT_FOUND,
+            Json(serde_json::json!({"code":"not_found"})),
+        ),
+    }
+}
+#[tokio::main]
+async fn main() {
+    tracing_subscriber::fmt()
+        .json()
+        .with_env_filter("info")
+        .init();
+    let store =
+        std::env::var("PATCH_CAGE_STORE").unwrap_or_else(|_| "/tmp/patch-cage/events.jsonl".into());
+    let state = S(Arc::new(App::new(store)));
+    let app = Router::new()
+        .route("/v1/health", get(health))
+        .route("/v1/readiness", get(ready))
+        .route("/v1/assessments", post(analyze))
+        .route("/v1/assessments/{id}/decision", post(decide))
+        .route("/v1/assessments/{id}", get(audit))
+        .layer(TimeoutLayer::with_status_code(
+            StatusCode::REQUEST_TIMEOUT,
+            Duration::from_secs(20),
+        ))
+        .layer(TraceLayer::new_for_http())
+        .layer(CorsLayer::permissive())
+        .with_state(state);
+    let addr = "0.0.0.0:8080";
+    let l = tokio::net::TcpListener::bind(addr).await.unwrap();
+    tracing::info!(%addr,"patch_cage_ready");
+    axum::serve(l, app).await.unwrap()
+}

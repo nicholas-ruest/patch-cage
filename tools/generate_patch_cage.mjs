@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { mkdirSync, writeFileSync, rmSync, cpSync, chmodSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 const root = process.argv[2];
 const phase = process.argv[3] || 'design';
 if (!root) throw new Error('usage: generate_patch_cage.mjs ROOT design|impl');
-const w = (p, s, mode) => { const f=join(root,p); mkdirSync(f.split('/').slice(0,-1).join('/'),{recursive:true}); writeFileSync(f,s); if(mode) chmodSync(f,mode); };
+const w = (p, s, mode) => { const f=join(root,p); mkdirSync(dirname(f),{recursive:true}); writeFileSync(f,s); if(mode) chmodSync(f,mode); };
 const json=(p,v)=>w(p,JSON.stringify(v,null,2)+'\n');
 
 const pins = {

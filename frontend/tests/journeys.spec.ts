@@ -33,7 +33,7 @@ test('[journey:durable-retrieval] record survives service restart and renders', 
   execFileSync(
     'bash',
     ['-lc', 'kill "$(cat /tmp/patch-cage/backend.pid)"; PORT=18080 CARGO_TARGET_DIR=/home/ruv/work/patch-cage-target cargo run -p pc-api > /tmp/patch-cage/backend.log 2>&1 & echo $! > /tmp/patch-cage/backend.pid'],
-    {cwd: process.cwd() + '/..'},
+    {cwd: process.cwd()},
   );
   for (let i = 0; i < 60; i++) {
     try {
